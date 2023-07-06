@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: prod-stedi-tyler
-          image: us-docker.pkg.dev/cit-262-team1-ez/tyler-api/stedi-api:latest # this image needs to refer to the new artifact repositiory
+          image: us-docker.pkg.dev/cit-262-team1-ez/tyler-api/stedi-api:latest #THIS IMAGE NEEDS TO REFER TO THE NEW ARTIFACT REGISTRY / SAME IMAGE AS IN DEV-MANIFEST (LINE 34), PLACE IT HERE
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -35,7 +35,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: tyler-twilio-dev
-                  key: twilio_token
+                  key: twilio-token
           ports:
             - containerPort: 443
           resources:
@@ -69,7 +69,7 @@ kind: Ingress
 metadata:
   name: prod-stedi-tyler-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: prod-stedi-tyler-public # this IP has not been created yet - need to create this first
+    kubernetes.io/ingress.global-static-ip-name: prod-stedi-tyler-public #THIS IP HAS NOT BEEN CREATED YET - NEED TO CREATE FIRST
     networking.gke.io/managed-certificates: prod-stedi-tyler-certificate
     # kubernetes.io/ingress.allow-http: "false"
 spec:
@@ -80,15 +80,15 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: prod-stedi-tyler-nodeport # this needs to match line 53
+            name: prod-stedi-tyler-nodeport #THIS NEEDS TO MATCH LINE 53
             port:
               number: 80
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: prod-stedi-tyler-certificate # needs to macth line 68
+  name: prod-stedi-tyler-certificate #THIS NEEDS TO MATCH LINE 68
 spec:
   domains:
-    - tyler.cit262.com # this is a dns record that has not been created yet - we need to creat this first
+    - tyler.cit262.com #THIS IS A DNS RECORD THAT HAS NOT BEEN CREATED YET - WE NEED TO CREATE THAT FIRST
     
